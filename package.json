@@ -1,12 +1,17 @@
 {
   "name": "money-control-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "MoneyControl API - Controle sua vida financeira de forma rápida e fácil",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ./ --fix",
+    "dev": "tsx watch ./src/server.ts"
   },
-  "author": "",
+  "author": {
+    "name": "Liliam Kaori Yamada",
+    "email": "lilikaori10@gmail.com",
+    "url": "https://github.com/LiliKaori"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/express": "^4.17.20",
