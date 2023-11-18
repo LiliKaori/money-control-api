@@ -9,8 +9,7 @@
         "plugin:@typescript-eslint/recommended",
         "plugin:prettier/recommended"
     ],
-    "overrides": [
-    ],
+    "overrides": [],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -22,15 +21,16 @@
         "eslint-plugin-import-helpers"
     ],
     "rules": {
-        "prettier/prettier": ["error",
-        {
-            "singleQuote": true,
-            "tabWidth": 4,
-            "trialingComma": "all",
-            "arrowParens": "always",
-            "semi": true,
-            "endOfLine": "auto"
-        }
+        "prettier/prettier": [
+            "error",
+            {
+                "singleQuote": true,
+                "tabWidth": 4,
+                "trialingComma": "all",
+                "arrowParens": "avoid",
+                "semi": true,
+                "endOfLine": "auto"
+            }
         ],
         "no-useless-constructor": "off",
         "@typescript-eslint/no-unused-vars": "off",

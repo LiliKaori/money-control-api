@@ -1,10 +1,16 @@
+import * as dotenv from 'dotenv';
 import express, { json } from 'express';
 
+import { setupMongo } from './database';
 import { routes } from './routes';
 
-const app = express();
+dotenv.config();
 
-app.use(json());
-app.use(routes);
+setupMongo().then(() => {
+    const app = express();
 
-app.listen(3333, () => console.log('🚀 App is runnig at port 3333'));
+    app.use(json());
+    app.use(routes);
+
+    app.listen(3333, () => console.log('🚀 App is runnig at port 3333'));
+});

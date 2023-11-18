@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  mongo:
+    container_name: moneycontrol-mongodb
+    restart: always
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'moneycontrol'
+      MONGO_INITDB_ROOT_PASSWORD: 'mongodb'
+    ports:
+      - '27017:27017'
+    networks:
+      - local
+  
+  app:
+    depends_on:
+      - mongo
+    container_name: moneycontrol-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/home/app
+    ports:
+      - '3334:3333'
+    networks:
+      - local
+
+networks:
+  local:
+    name: local
