@@ -1,36 +1,38 @@
 import { NextFunction, Request, Response } from 'express';
-import { z } from 'zod';
-
-import { CategoriesRepository } from '../database/repositories/categories.repository';
-import { CategoryModel } from '../database/schemas/category.schema';
-import { CreateCategoryDTO } from '../dtos/category.dto';
-import { CategoriesService } from '../services/categories.services';
 import { StatusCodes } from 'http-status-codes';
 
+import { CreateCategoryDTO } from '../dtos/category.dto';
+import { CategoriesService } from '../services/categories.services';
+
 export class CategoriesController {
-    async create(
+    constructor(private categoriesService: CategoriesService) {}
+
+    create = async (
         req: Request<unknown, unknown, CreateCategoryDTO>,
         res: Response,
         next: NextFunction,
-    ) {
+    ) => {
         try {
-            const validateSchema = z.object({
-                title: z.string(),
-                color: z.string().regex(/^#[A-Fa-f0-9]{6}$/),
-            });
-
-            validateSchema.parse(req.body);
-
             const { title, color } = req.body;
 
-            const repository = new CategoriesRepository(CategoryModel);
-            const service = new CategoriesService(repository);
-
-            const result = await service.create({ title, color });
+            const result = await this.categoriesService.create({
+                title,
+                color,
+            });
 
             return res.status(StatusCodes.CREATED).json(result);
         } catch (err) {
             next(err);
         }
-    }
+    };
+
+    index = async (_: Request, res: Response, next: NextFunction) => {
+        try {
+            const result = await this.categoriesService.index();
+
+            return res.status(StatusCodes.OK).json(result);
+        } catch (err) {
+            next(err);
+        }
+    };
 }
