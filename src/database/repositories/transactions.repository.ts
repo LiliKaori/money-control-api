@@ -1,9 +1,4 @@
-import { title } from 'process';
-
-import {
-    CreateTransactionDTO,
-    IndexTransactionDTO,
-} from '../../dtos/transactions.dto';
+import { IndexTransactionDTO } from '../../dtos/transactions.dto';
 import { Transaction } from '../../entities/transactions.entity';
 import { TransactionModel } from '../schemas/transaction.schema';
 
@@ -34,17 +29,19 @@ export class TransactionsRepository {
         beginDate,
         endDate,
     }: IndexTransactionDTO): Promise<Transaction[]> {
-        const transactions = await this.model.find({
-            title: {
-                $regex: title,
-                $options: 'i',
-            },
-            'category._id': categoryId,
-            date: {
-                $gte: beginDate,
-                $lte: endDate,
-            },
-        });
+        const whereParams: Record<string, unknown> = {
+            ...(title && { title: { $regex: title, $options: 'i' } }),
+            ...(categoryId && { 'category._id': categoryId }),
+        };
+
+        if (beginDate || endDate) {
+            whereParams.date = {
+                ...(beginDate && { $gte: beginDate }),
+                ...(endDate && { $lte: endDate }),
+            };
+        }
+
+        const transactions = await this.model.find(whereParams);
 
         const transactionsMap = transactions.map(item =>
             item.toObject<Transaction>(),
