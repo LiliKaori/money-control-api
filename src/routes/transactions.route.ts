@@ -1,7 +1,11 @@
 import { Router } from 'express';
 
 import { TransactionsController } from '../controllers/transactions.controller';
-import { createTransactionSchema } from '../dtos/transactions.dto';
+import {
+    createTransactionSchema,
+    getDashboardSchema,
+    indexTransactionSchema,
+} from '../dtos/transactions.dto';
 import { TransactionsFactory } from '../factories/transactions.factory';
 import { ParamsType, validator } from '../middleware/validator.middleware';
 
@@ -11,7 +15,14 @@ const controller = new TransactionsController(
     TransactionsFactory.getServiceInstance(),
 );
 
-transactionsRoutes.get('/', controller.index);
+transactionsRoutes.get(
+    '/',
+    validator({
+        schema: indexTransactionSchema,
+        type: ParamsType.QUERY,
+    }),
+    controller.index,
+);
 
 transactionsRoutes.post(
     '/',
@@ -20,4 +31,13 @@ transactionsRoutes.post(
         type: ParamsType.BODY,
     }),
     controller.create,
+);
+
+transactionsRoutes.get(
+    '/dashboard',
+    validator({
+        schema: getDashboardSchema,
+        type: ParamsType.QUERY,
+    }),
+    controller.getDashboard,
 );
