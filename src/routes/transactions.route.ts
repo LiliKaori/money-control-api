@@ -11,7 +11,7 @@ const controller = new TransactionsController(
     TransactionsFactory.getServiceInstance(),
 );
 
-// transactionsRoutes.get('/', controller.index);
+transactionsRoutes.get('/', controller.index);
 
 transactionsRoutes.post(
     '/',
