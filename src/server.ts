@@ -1,3 +1,4 @@
+import cors from 'cors';
 import * as dotenv from 'dotenv';
 import express, { json } from 'express';
 
@@ -10,6 +11,11 @@ dotenv.config();
 setupMongo().then(() => {
     const app = express();
 
+    app.use(
+        cors({
+            origin: process.env.FRONT_URL,
+        }),
+    );
     app.use(json());
     app.use(routes);
     app.use(errorHandler);
